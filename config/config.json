@@ -1,0 +1,30 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "device-list-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/deviceList/DeviceListWebPart.js",
+          "manifest": "./src/webparts/deviceList/DeviceListWebPart.manifest.json"
+        }
+      ]
+    },
+    "internal-form-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/internalForm/InternalFormWebPart.js",
+          "manifest": "./src/webparts/internalForm/InternalFormWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {
+    "@microsoft/sp-module-loader": "node_modules/@microsoft/sp-module-loader/dist/sp-module-loader.js"
+  },
+  "localizedResources": {
+    "DeviceListWebPartStrings": "lib/webparts/deviceList/loc/{locale}.js",
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
+    "InternalFormWebPartStrings": "lib/webparts/internalForm/loc/{locale}.js"
+  }
+}

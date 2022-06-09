@@ -1,0 +1,195 @@
+@import "~office-ui-fabric-react/dist/sass/References.scss";
+
+.internalForm {
+  .container {
+    max-width: 700px;
+    margin: 0px auto;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .row {
+    @include ms-Grid-row;
+    @include ms-fontColor-white;
+    background-color: $ms-color-themeDark;
+    padding: 20px;
+  }
+
+  .column {
+    @include ms-Grid-col;
+    @include ms-lg10;
+    @include ms-xl8;
+    @include ms-xlPush2;
+    @include ms-lgPush1;
+  }
+
+  .title {
+    @include ms-font-xl;
+    @include ms-fontColor-white;
+  }
+
+  .subTitle {
+    @include ms-font-l;
+    @include ms-fontColor-white;
+  }
+
+  .description {
+    @include ms-font-l;
+    @include ms-fontColor-white;
+  }
+
+  .button {
+    // Our button
+    text-decoration: none;
+    height: 32px;
+
+    // Primary Button
+    display: flex;
+    min-width: 80px;
+    // background-color: #004fa2;
+    // border-color:#004fa2;
+    color: $ms-color-white;
+
+    // Basic Button
+    outline: transparent;
+    position: relative;
+    font-family: "Segoe UI WestEuropean", "Segoe UI", -apple-system,
+      BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: $ms-font-size-m;
+    font-weight: $ms-font-weight-regular;
+    border-width: 0;
+    text-align: center;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0 16px;
+
+    .label {
+      font-weight: $ms-font-weight-semibold;
+      font-size: $ms-font-size-m;
+      height: 32px;
+      line-height: 32px;
+      margin: 0 4px;
+      vertical-align: top;
+      display: inline-block;
+    }
+  }
+}
+.formHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 2rem;
+}
+.c {
+  color: #004fa2;
+  text-align: center;
+}
+.quoteFormSectionOne {
+  display: flex;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  .sectionOneSub {
+    width: 100%;
+    padding: 1rem;
+    background-color: #fff;
+  }
+}
+.quoteFormSection {
+  background-color: #fff;
+  padding: 1rem;
+}
+.installationTbl {
+  width: 100%;
+  thead {
+    background-color: #fdefeb;
+    th {
+      width: 3rem;
+    }
+  }
+}
+.totalSection {
+  color: #000;
+  display: flex;
+  justify-content: end;
+}
+.SubmitSection {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 2rem;
+}
+.taxTable {
+  width: 80%;
+  margin: auto;
+  thead {
+    th {
+      color: #d71e2b;
+      width: 3rem;
+    }
+  }
+  tr {
+    padding: 0.3rem;
+  }
+}
+.taxSection {
+  background-color: #ffffff;
+  padding: 1rem;
+  width: 50%;
+  margin: auto;
+}
+.modalContent {
+  display: flex;
+  width: 100%;
+}
+.heading {
+  text-align: center;
+}
+.task {
+  // margin-left: 3.5rem;
+  padding: 20px 0;
+  font-size: 1.2rem;
+}
+.formTasks {
+  > div {
+    margin-right: 20px;
+  }
+  display: flex;
+  // justify-content:space-between;
+  align-items: center;
+}
+
+.formpplpicker {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 12rem;
+  label {
+    margin-right: 0.5rem;
+  }
+}
+.formDatepick {
+  margin-top: 5px;
+}
+.peoplepickerstyle {
+  max-width: 20rem;
+}
+
+.devicebtn {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 10px;
+}
+.newShippingDetails {
+  display: flex;
+  justify-content: space-between;
+}
+.newShippingLabels {
+  display: flex;
+  justify-content: space-between;
+  .newShippingLabel {
+    width: 300px;
+    margin: 0 1rem 0.5rem 0;
+    align-self: flex-end;
+    padding-bottom: 0.2rem;
+    font-weight: 600;
+  }
+}
