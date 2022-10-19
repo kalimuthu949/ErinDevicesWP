@@ -1,22 +1,22 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
-import "../../../ExternalRef/workbench.css";
-import styles from "./InternalForm.module.scss";
-import { Icon } from "@fluentui/react/lib/Icon";
-import { IconButton } from "@fluentui/react/lib/Button";
-import { TextField, MaskedTextField } from "@fluentui/react/lib/TextField";
-import { Label } from "@fluentui/react/lib/Label";
+import * as React from 'react'
+import { useState, useEffect, useRef } from 'react'
+import '../../../ExternalRef/workbench.css'
+import styles from './InternalForm.module.scss'
+import { Icon } from '@fluentui/react/lib/Icon'
+import { IconButton } from '@fluentui/react/lib/Button'
+import { TextField, MaskedTextField } from '@fluentui/react/lib/TextField'
+import { Label } from '@fluentui/react/lib/Label'
 import {
   ChoiceGroup,
   IChoiceGroupOption,
-} from "@fluentui/react/lib/ChoiceGroup";
-import { DefaultButton, PrimaryButton } from "@fluentui/react/lib/Button";
-import { Checkbox, Stack, IIconProps, TextStyles } from "@fluentui/react";
+} from '@fluentui/react/lib/ChoiceGroup'
+import { DefaultButton, PrimaryButton } from '@fluentui/react/lib/Button'
+import { Checkbox, Stack, IIconProps, TextStyles } from '@fluentui/react'
 import {
   PeoplePicker,
   PrincipalType,
-} from "@pnp/spfx-controls-react/lib/PeoplePicker";
-import { ThemeProvider, PartialTheme, createTheme } from "@fluentui/react";
+} from '@pnp/spfx-controls-react/lib/PeoplePicker'
+import { ThemeProvider, PartialTheme, createTheme } from '@fluentui/react'
 
 import {
   DatePicker,
@@ -25,199 +25,201 @@ import {
   IDropdownOption,
   mergeStyles,
   defaultDatePickerStrings,
-} from "@fluentui/react";
-import { Dialog, DialogType, DialogFooter } from "@fluentui/react/lib/Dialog";
+} from '@fluentui/react'
+import { Dialog, DialogType, DialogFooter } from '@fluentui/react/lib/Dialog'
 
 const halfWidthInput = {
-  root: { width: 300, margin: "0 1rem 0.5rem 0" },
-};
+  root: { width: 300, margin: '0 1rem 0.5rem 0' },
+}
 
 interface Itaskdetails {
-  TaskChecked: false;
-  TaskName: "";
-  CompletedBy: "";
-  Userid: "";
-  Date: Date;
+  TaskChecked: false
+  TaskName: ''
+  CompletedBy: ''
+  Userid: ''
+  Date: Date
 }
-[];
+;[]
 
 interface IShippingdetails {
-  ShippingDate: Date;
-  TrackingNumber: string;
-  CarrierNumber: string;
+  ShippingDate: Date
+  TrackingNumber: string
+  CarrierNumber: string
 }
-[];
+;[]
 
-var count = 0;
+var count = 0
 
 const App = (props) => {
-  let requestID = 0;
-  let requestType = "";
-  let InternalItems = [];
-  const paramsString = window.location.href.split("?")[1].toLowerCase();
-  const searchParams = new URLSearchParams(paramsString);
-  searchParams.has("requestid")
-    ? (requestID = Number(searchParams.get("requestid")))
-    : "";
-  searchParams.has("requesttype")
-    ? (requestType = searchParams.get("requesttype"))
-    : "";
-  const dialogStyles = { main: { maxWidth: 450 } };
+  // const messagesEndRef = useRef(null)
+  // const scrollToBottom = () => {
+  //   messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  // }
+  let requestID = 0
+  let requestType = ''
+  let InternalItems = []
+  const paramsString = window.location.href.split('?')[1].toLowerCase()
+  const searchParams = new URLSearchParams(paramsString)
+  searchParams.has('requestid')
+    ? (requestID = Number(searchParams.get('requestid')))
+    : ''
+  searchParams.has('requesttype')
+    ? (requestType = searchParams.get('requesttype'))
+    : ''
+  const dialogStyles = { main: { maxWidth: 450 } }
   const dialogContentProps = {
     type: DialogType.normal,
-    title: "",
-    closeButtonAriaLabel: "Close",
-    subText: "Saved Successfully",
-  };
+    title: '',
+    closeButtonAriaLabel: 'Close',
+    subText: 'Saved Successfully',
+  }
   const fullWidthInput = {
-    root: { width: "200px" },
-  };
+    root: { width: '200px' },
+  }
   // const halfWidthInput = {
   //   root: { width: "38%" },
   // };
 
   const onFormatDate = (date?: Date): string => {
-    return (
-      date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear()
-    );
-  };
+    return date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear()
+  }
 
   const options: IChoiceGroupOption[] = [
-    { key: "A", text: "Yes" },
-    { key: "B", text: "No" },
-  ];
+    { key: 'A', text: 'Yes' },
+    { key: 'B', text: 'No' },
+  ]
 
   const blueTheme = createTheme({
     palette: {
-      themePrimary: "#004fa2",
-      themeLighterAlt: "#f1f6fb",
-      themeLighter: "#cadcf0",
-      themeLight: "#9fc0e3",
-      themeTertiary: "#508ac8",
-      themeSecondary: "#155fae",
-      themeDarkAlt: "#004793",
-      themeDark: "#003c7c",
-      themeDarker: "#002c5b",
-      neutralLighterAlt: "#faf9f8",
-      neutralLighter: "#f3f2f1",
-      neutralLight: "#edebe9",
-      neutralQuaternaryAlt: "#e1dfdd",
-      neutralQuaternary: "#d0d0d0",
-      neutralTertiaryAlt: "#c8c6c4",
-      neutralTertiary: "#a19f9d",
-      neutralSecondary: "#605e5c",
-      neutralPrimaryAlt: "#3b3a39",
-      neutralPrimary: "#323130",
-      neutralDark: "#201f1e",
-      black: "#000000",
-      white: "#ffffff",
+      themePrimary: '#004fa2',
+      themeLighterAlt: '#f1f6fb',
+      themeLighter: '#cadcf0',
+      themeLight: '#9fc0e3',
+      themeTertiary: '#508ac8',
+      themeSecondary: '#155fae',
+      themeDarkAlt: '#004793',
+      themeDark: '#003c7c',
+      themeDarker: '#002c5b',
+      neutralLighterAlt: '#faf9f8',
+      neutralLighter: '#f3f2f1',
+      neutralLight: '#edebe9',
+      neutralQuaternaryAlt: '#e1dfdd',
+      neutralQuaternary: '#d0d0d0',
+      neutralTertiaryAlt: '#c8c6c4',
+      neutralTertiary: '#a19f9d',
+      neutralSecondary: '#605e5c',
+      neutralPrimaryAlt: '#3b3a39',
+      neutralPrimary: '#323130',
+      neutralDark: '#201f1e',
+      black: '#000000',
+      white: '#ffffff',
     },
-  });
+  })
   const redTheme = createTheme({
     palette: {
-      themePrimary: "#d71e2b",
-      themeLighterAlt: "#fdf5f5",
-      themeLighter: "#f8d6d9",
-      themeLight: "#f3b4b8",
-      themeTertiary: "#e77078",
-      themeSecondary: "#db3540",
-      themeDarkAlt: "#c11b26",
-      themeDark: "#a31720",
-      themeDarker: "#781118",
-      neutralLighterAlt: "#faf9f8",
-      neutralLighter: "#f3f2f1",
-      neutralLight: "#edebe9",
-      neutralQuaternaryAlt: "#e1dfdd",
-      neutralQuaternary: "#d0d0d0",
-      neutralTertiaryAlt: "#c8c6c4",
-      neutralTertiary: "#a19f9d",
-      neutralSecondary: "#605e5c",
-      neutralPrimaryAlt: "#3b3a39",
-      neutralPrimary: "#323130",
-      neutralDark: "#201f1e",
-      black: "#000000",
-      white: "#ffffff",
+      themePrimary: '#d71e2b',
+      themeLighterAlt: '#fdf5f5',
+      themeLighter: '#f8d6d9',
+      themeLight: '#f3b4b8',
+      themeTertiary: '#e77078',
+      themeSecondary: '#db3540',
+      themeDarkAlt: '#c11b26',
+      themeDark: '#a31720',
+      themeDarker: '#781118',
+      neutralLighterAlt: '#faf9f8',
+      neutralLighter: '#f3f2f1',
+      neutralLight: '#edebe9',
+      neutralQuaternaryAlt: '#e1dfdd',
+      neutralQuaternary: '#d0d0d0',
+      neutralTertiaryAlt: '#c8c6c4',
+      neutralTertiary: '#a19f9d',
+      neutralSecondary: '#605e5c',
+      neutralPrimaryAlt: '#3b3a39',
+      neutralPrimary: '#323130',
+      neutralDark: '#201f1e',
+      black: '#000000',
+      white: '#ffffff',
     },
-  });
+  })
   const choiceGroupStyles = {
     flexContainer: {
-      display: "flex",
+      display: 'flex',
       width: 300,
-      margin: "0 1rem 0.5rem 0",
+      margin: '0 1rem 0.5rem 0',
       label: {
-        marginRight: "1rem",
+        marginRight: '1rem',
       },
     },
-  };
-  const addIcon: IIconProps = { iconName: "Add" };
-  var tasks: Itaskdetails[] = [];
-  var shippingDetails: IShippingdetails[] = [];
-  const [firstDayOfWeek, setFirstDayOfWeek] = useState(DayOfWeek.Sunday);
-  const [hideDialog, setHideDialog] = useState(true);
-  const [rows, setrows] = useState(0);
-  const [newtasks, setnewtasks] = useState(tasks);
-  const [newShippingDetails, setnewShippingDetails] = useState(shippingDetails);
+  }
+  const addIcon: IIconProps = { iconName: 'Add' }
+  var tasks: Itaskdetails[] = []
+  var shippingDetails: IShippingdetails[] = []
+  const [firstDayOfWeek, setFirstDayOfWeek] = useState(DayOfWeek.Sunday)
+  const [hideDialog, setHideDialog] = useState(true)
+  const [rows, setrows] = useState(0)
+  const [newtasks, setnewtasks] = useState(tasks)
+  const [newShippingDetails, setnewShippingDetails] = useState(shippingDetails)
   const [internalFormItem, setinternalFormItem] = useState({
-    BENumber: "",
-    ProjectName: "",
-    BuilderInitials: "",
-    ProjectManager: "",
-    ProjectDescription: "",
-    Longtitude: "",
-    Latitude: "",
-    Address: "",
-    State: "",
-    Zipcode: "",
+    BENumber: '',
+    ProjectName: '',
+    BuilderInitials: '',
+    ProjectManager: '',
+    ProjectDescription: '',
+    Longtitude: '',
+    Latitude: '',
+    Address: '',
+    State: '',
+    Zipcode: '',
     DateofQuote: new Date(),
     DateQuoteSent: new Date(),
     ShippingDate: new Date(),
-    TrackingNumber: "",
+    TrackingNumber: '',
     POIssued: false,
-    UtilityNetInformation: "",
+    UtilityNetInformation: '',
     InternalConfig: false,
-    InternalConfigAssignedToEmail: "",
+    InternalConfigAssignedToEmail: '',
     InternalConfigAssignedToId: 0,
     InternalConfigDate: new Date(),
     LightingLiveConfig: false,
-    LightingLiveConfigAssignedToEmail: "",
+    LightingLiveConfigAssignedToEmail: '',
     LightingLiveConfigAssignedToId: 0,
     LightingLiveConfigDate: new Date(),
     HVACConfig: false,
-    HVACConfigAssignedToEmail: "",
+    HVACConfigAssignedToEmail: '',
     HVACConfigAssignedToId: 0,
     HVACConfigDate: new Date(),
     OtherNetworkIpsOnsite: false,
-    OtherNetworkIpsAssignedToEmail: "",
+    OtherNetworkIpsAssignedToEmail: '',
     OtherNetworkIpsAssignedToId: 0,
     OtherNetworkIpsOnsiteDate: new Date(),
     StationName: false,
-    StationNameAssignedToEmail: "",
+    StationNameAssignedToEmail: '',
     StationNameAssignedToId: 0,
     StationNameDate: new Date(),
     OnboardToSupervisor: false,
-    OnboardAssignedToEmail: "",
+    OnboardAssignedToEmail: '',
     OnboardAssignedToId: 0,
     OnboardDate: new Date(),
     Id: 0,
-    Notes: "",
-  });
-  const [reRender, setReRender] = useState(true);
+    Notes: '',
+  })
+  const [reRender, setReRender] = useState(true)
 
   useEffect(() => {
     if (reRender) {
       if (requestType && requestID) {
         props.spcontext.web.lists
-          .getByTitle("InternalFormList")
+          .getByTitle('InternalFormList')
           .items.select(
-            "*,InternalConfigAssignedTo/Title,InternalConfigAssignedTo/EMail,InternalConfigAssignedTo/ID,LightingLiveConfigAssignedTo/Title,LightingLiveConfigAssignedTo/EMail,LightingLiveConfigAssignedTo/ID,HVACConfigAssignedTo/Title,HVACConfigAssignedTo/EMail,HVACConfigAssignedTo/ID,OtherNetworkIpsAssignedTo/Title,OtherNetworkIpsAssignedTo/EMail,OtherNetworkIpsAssignedTo/ID,StationNameAssignedTo/Title,StationNameAssignedTo/EMail,StationNameAssignedTo/ID,OnboardAssignedTo/Title,OnboardAssignedTo/EMail,OnboardAssignedTo/ID"
+            '*,InternalConfigAssignedTo/Title,InternalConfigAssignedTo/EMail,InternalConfigAssignedTo/ID,LightingLiveConfigAssignedTo/Title,LightingLiveConfigAssignedTo/EMail,LightingLiveConfigAssignedTo/ID,HVACConfigAssignedTo/Title,HVACConfigAssignedTo/EMail,HVACConfigAssignedTo/ID,OtherNetworkIpsAssignedTo/Title,OtherNetworkIpsAssignedTo/EMail,OtherNetworkIpsAssignedTo/ID,StationNameAssignedTo/Title,StationNameAssignedTo/EMail,StationNameAssignedTo/ID,OnboardAssignedTo/Title,OnboardAssignedTo/EMail,OnboardAssignedTo/ID',
           )
           .expand(
-            "InternalConfigAssignedTo,LightingLiveConfigAssignedTo,HVACConfigAssignedTo,OtherNetworkIpsAssignedTo,StationNameAssignedTo,OnboardAssignedTo"
+            'InternalConfigAssignedTo,LightingLiveConfigAssignedTo,HVACConfigAssignedTo,OtherNetworkIpsAssignedTo,StationNameAssignedTo,OnboardAssignedTo',
           )
           .filter(
-            `ReferenceID eq '${requestID}' and RecordType eq '${requestType}'`
+            `ReferenceID eq '${requestID}' and RecordType eq '${requestType}'`,
           )
-          .orderBy("Created", false)
+          .orderBy('Created', false)
           .get()
           .then(async (InternalData: any) => {
             if (InternalData.length > 0) {
@@ -244,53 +246,50 @@ const App = (props) => {
                   InternalConfig: dData.InternalConfig,
                   InternalConfigAssignedToEmail: dData.InternalConfigAssignedTo
                     ? dData.InternalConfigAssignedTo.EMail
-                    : "",
+                    : '',
                   InternalConfigAssignedToId: dData.InternalConfigAssignedTo
                     ? dData.InternalConfigAssignedTo.ID
-                    : "",
+                    : '',
                   InternalConfigDate: dData.InternalConfigDate,
                   LightingLiveConfig: dData.LightingLiveConfig,
-                  LightingLiveConfigAssignedToEmail:
-                    dData.LightingLiveConfigAssignedTo
-                      ? dData.LightingLiveConfigAssignedTo.EMail
-                      : "",
-                  LightingLiveConfigAssignedToId:
-                    dData.LightingLiveConfigAssignedTo
-                      ? dData.LightingLiveConfigAssignedTo.ID
-                      : "",
+                  LightingLiveConfigAssignedToEmail: dData.LightingLiveConfigAssignedTo
+                    ? dData.LightingLiveConfigAssignedTo.EMail
+                    : '',
+                  LightingLiveConfigAssignedToId: dData.LightingLiveConfigAssignedTo
+                    ? dData.LightingLiveConfigAssignedTo.ID
+                    : '',
                   LightingLiveConfigDate: dData.InternalConfigDate,
                   HVACConfig: dData.HVACConfig,
                   HVACConfigAssignedToEmail: dData.HVACConfigAssignedTo
                     ? dData.HVACConfigAssignedTo.EMail
-                    : "",
+                    : '',
                   HVACConfigAssignedToId: dData.HVACConfigAssignedTo
                     ? dData.HVACConfigAssignedTo.ID
-                    : "",
+                    : '',
                   HVACConfigDate: dData.HVACConfigDate,
                   OtherNetworkIpsOnsite: dData.OtherNetworkIpsOnsite,
-                  OtherNetworkIpsAssignedToEmail:
-                    dData.OtherNetworkIpsAssignedTo
-                      ? dData.OtherNetworkIpsAssignedTo.EMail
-                      : "",
+                  OtherNetworkIpsAssignedToEmail: dData.OtherNetworkIpsAssignedTo
+                    ? dData.OtherNetworkIpsAssignedTo.EMail
+                    : '',
                   OtherNetworkIpsAssignedToId: dData.OtherNetworkIpsAssignedTo
                     ? dData.OtherNetworkIpsAssignedTo.ID
-                    : "",
+                    : '',
                   OtherNetworkIpsOnsiteDate: dData.OtherNetworkIpsOnsiteDate,
                   StationName: dData.StationName,
                   StationNameAssignedToEmail: dData.StationNameAssignedTo
                     ? dData.StationNameAssignedTo.EMail
-                    : "",
+                    : '',
                   StationNameAssignedToId: dData.StationNameAssignedTo
                     ? dData.StationNameAssignedTo.ID
-                    : "",
+                    : '',
                   StationNameDate: dData.StationNameDate,
                   OnboardToSupervisor: dData.OnboardToSupervisor,
                   OnboardAssignedToEmail: dData.OnboardAssignedTo
                     ? dData.OnboardAssignedTo.EMail
-                    : "",
+                    : '',
                   OnboardAssignedToId: dData.OnboardAssignedTo
                     ? dData.OnboardAssignedTo.ID
-                    : "",
+                    : '',
                   OnboardDate: dData.OnboardDate,
                   Id: dData.Id,
                   Notes: dData.Notes,
@@ -300,199 +299,199 @@ const App = (props) => {
                   ShippingDetails: dData.ShippingDetails
                     ? JSON.parse(dData.ShippingDetails)
                     : [],
-                });
-              });
-              setnewtasks(InternalItems[0].TaskDetails);
-              setnewShippingDetails(InternalItems[0].ShippingDetails);
-              setinternalFormItem(InternalItems[0]);
+                })
+              })
+              setnewtasks(InternalItems[0].TaskDetails)
+              setnewShippingDetails(InternalItems[0].ShippingDetails)
+              setinternalFormItem(InternalItems[0])
             }
           })
           .then(() => {
-            setReRender(false);
-          });
+            setReRender(false)
+          })
       } else {
-        setReRender(false);
+        setReRender(false)
       }
     }
-  }, [reRender]);
+  }, [reRender])
 
   async function handleChange(newValue, param) {
-    if (param == "BENumber")
-      setinternalFormItem({ ...internalFormItem, BENumber: newValue });
-    else if (param == "ProjectName")
-      setinternalFormItem({ ...internalFormItem, ProjectName: newValue });
-    else if (param == "BuilderInitials")
-      setinternalFormItem({ ...internalFormItem, BuilderInitials: newValue });
-    else if (param == "ProjectManager")
-      setinternalFormItem({ ...internalFormItem, ProjectManager: newValue });
-    else if (param == "ProjectDescription")
+    if (param == 'BENumber')
+      setinternalFormItem({ ...internalFormItem, BENumber: newValue })
+    else if (param == 'ProjectName')
+      setinternalFormItem({ ...internalFormItem, ProjectName: newValue })
+    else if (param == 'BuilderInitials')
+      setinternalFormItem({ ...internalFormItem, BuilderInitials: newValue })
+    else if (param == 'ProjectManager')
+      setinternalFormItem({ ...internalFormItem, ProjectManager: newValue })
+    else if (param == 'ProjectDescription')
       setinternalFormItem({
         ...internalFormItem,
         ProjectDescription: newValue,
-      });
-    else if (param == "Longtitude")
-      setinternalFormItem({ ...internalFormItem, Longtitude: newValue });
-    else if (param == "Latitude")
-      setinternalFormItem({ ...internalFormItem, Latitude: newValue });
-    else if (param == "Address")
-      setinternalFormItem({ ...internalFormItem, Address: newValue });
-    else if (param == "State")
-      setinternalFormItem({ ...internalFormItem, State: newValue });
-    else if (param == "Zipcode")
-      setinternalFormItem({ ...internalFormItem, Zipcode: newValue });
-    else if (param == "UtilityNetInformation")
+      })
+    else if (param == 'Longtitude')
+      setinternalFormItem({ ...internalFormItem, Longtitude: newValue })
+    else if (param == 'Latitude')
+      setinternalFormItem({ ...internalFormItem, Latitude: newValue })
+    else if (param == 'Address')
+      setinternalFormItem({ ...internalFormItem, Address: newValue })
+    else if (param == 'State')
+      setinternalFormItem({ ...internalFormItem, State: newValue })
+    else if (param == 'Zipcode')
+      setinternalFormItem({ ...internalFormItem, Zipcode: newValue })
+    else if (param == 'UtilityNetInformation')
       setinternalFormItem({
         ...internalFormItem,
         UtilityNetInformation: newValue,
-      });
-    else if (param == "DateofQuote")
+      })
+    else if (param == 'DateofQuote')
       setinternalFormItem({
         ...internalFormItem,
         DateofQuote: newValue,
-      });
-    else if (param == "DateQuoteSent")
+      })
+    else if (param == 'DateQuoteSent')
       setinternalFormItem({
         ...internalFormItem,
         DateQuoteSent: newValue,
-      });
-    else if (param == "ShippingDate")
+      })
+    else if (param == 'ShippingDate')
       setinternalFormItem({
         ...internalFormItem,
         ShippingDate: newValue,
-      });
-    else if (param == "POIssued")
+      })
+    else if (param == 'POIssued')
       setinternalFormItem({
         ...internalFormItem,
         POIssued: newValue,
-      });
-    else if (param == "TrackingNumber")
+      })
+    else if (param == 'TrackingNumber')
       setinternalFormItem({
         ...internalFormItem,
         TrackingNumber: newValue,
-      });
-    else if (param == "InternalConfigDate")
+      })
+    else if (param == 'InternalConfigDate')
       setinternalFormItem({
         ...internalFormItem,
         InternalConfigDate: newValue,
-      });
-    else if (param == "InternalConfigAssignedTo" && newValue.length > 0)
+      })
+    else if (param == 'InternalConfigAssignedTo' && newValue.length > 0)
       setinternalFormItem({
         ...internalFormItem,
         InternalConfigAssignedToEmail: newValue[0].secondaryText,
         InternalConfigAssignedToId: newValue[0].id,
-      });
-    else if (param == "InternalConfigAssignedTo" && newValue.length == 0)
+      })
+    else if (param == 'InternalConfigAssignedTo' && newValue.length == 0)
       setinternalFormItem({
         ...internalFormItem,
-        InternalConfigAssignedToEmail: "",
+        InternalConfigAssignedToEmail: '',
         InternalConfigAssignedToId: 0,
-      });
-    else if (param == "InternalConfig")
-      setinternalFormItem({ ...internalFormItem, InternalConfig: newValue });
-    else if (param == "LightingLiveConfig")
+      })
+    else if (param == 'InternalConfig')
+      setinternalFormItem({ ...internalFormItem, InternalConfig: newValue })
+    else if (param == 'LightingLiveConfig')
       setinternalFormItem({
         ...internalFormItem,
         LightingLiveConfig: newValue,
-      });
-    else if (param == "LightingLiveConfigAssignedTo" && newValue.length > 0)
+      })
+    else if (param == 'LightingLiveConfigAssignedTo' && newValue.length > 0)
       setinternalFormItem({
         ...internalFormItem,
         LightingLiveConfigAssignedToEmail: newValue[0].secondaryText,
         LightingLiveConfigAssignedToId: newValue[0].id,
-      });
-    else if (param == "LightingLiveConfigAssignedTo" && newValue.length == 0)
+      })
+    else if (param == 'LightingLiveConfigAssignedTo' && newValue.length == 0)
       setinternalFormItem({
         ...internalFormItem,
-        LightingLiveConfigAssignedToEmail: "",
+        LightingLiveConfigAssignedToEmail: '',
         LightingLiveConfigAssignedToId: 0,
-      });
-    else if (param == "LightingLiveConfigDate")
+      })
+    else if (param == 'LightingLiveConfigDate')
       setinternalFormItem({
         ...internalFormItem,
         LightingLiveConfigDate: newValue,
-      });
-    else if (param == "HVACConfig")
-      setinternalFormItem({ ...internalFormItem, HVACConfig: newValue });
-    else if (param == "HVACConfigAssignedTo" && newValue.length > 0)
+      })
+    else if (param == 'HVACConfig')
+      setinternalFormItem({ ...internalFormItem, HVACConfig: newValue })
+    else if (param == 'HVACConfigAssignedTo' && newValue.length > 0)
       setinternalFormItem({
         ...internalFormItem,
         HVACConfigAssignedToEmail: newValue[0].secondaryText,
         HVACConfigAssignedToId: newValue[0].id,
-      });
-    else if (param == "HVACConfigAssignedTo" && newValue.length == 0)
+      })
+    else if (param == 'HVACConfigAssignedTo' && newValue.length == 0)
       setinternalFormItem({
         ...internalFormItem,
-        HVACConfigAssignedToEmail: "",
+        HVACConfigAssignedToEmail: '',
         HVACConfigAssignedToId: 0,
-      });
-    else if (param == "HVACConfigDate")
-      setinternalFormItem({ ...internalFormItem, HVACConfigDate: newValue });
-    else if (param == "OtherNetworkIpsOnsite")
+      })
+    else if (param == 'HVACConfigDate')
+      setinternalFormItem({ ...internalFormItem, HVACConfigDate: newValue })
+    else if (param == 'OtherNetworkIpsOnsite')
       setinternalFormItem({
         ...internalFormItem,
         OtherNetworkIpsOnsite: newValue,
-      });
-    else if (param == "OtherNetworkIpsAssignedTo" && newValue.length > 0)
+      })
+    else if (param == 'OtherNetworkIpsAssignedTo' && newValue.length > 0)
       setinternalFormItem({
         ...internalFormItem,
         OtherNetworkIpsAssignedToEmail: newValue[0].secondaryText,
         OtherNetworkIpsAssignedToId: newValue[0].id,
-      });
-    else if (param == "OtherNetworkIpsAssignedTo" && newValue.length == 0)
+      })
+    else if (param == 'OtherNetworkIpsAssignedTo' && newValue.length == 0)
       setinternalFormItem({
         ...internalFormItem,
-        OtherNetworkIpsAssignedToEmail: "",
+        OtherNetworkIpsAssignedToEmail: '',
         OtherNetworkIpsAssignedToId: 0,
-      });
-    else if (param == "OtherNetworkIpsOnsiteDate")
+      })
+    else if (param == 'OtherNetworkIpsOnsiteDate')
       setinternalFormItem({
         ...internalFormItem,
         OtherNetworkIpsOnsiteDate: newValue,
-      });
-    else if (param == "StationName")
-      setinternalFormItem({ ...internalFormItem, StationName: newValue });
-    else if (param == "StationNameAssignedTo" && newValue.length > 0)
+      })
+    else if (param == 'StationName')
+      setinternalFormItem({ ...internalFormItem, StationName: newValue })
+    else if (param == 'StationNameAssignedTo' && newValue.length > 0)
       setinternalFormItem({
         ...internalFormItem,
         StationNameAssignedToEmail: newValue[0].secondaryText,
         StationNameAssignedToId: newValue[0].id,
-      });
-    else if (param == "StationNameAssignedTo" && newValue.length == 0)
+      })
+    else if (param == 'StationNameAssignedTo' && newValue.length == 0)
       setinternalFormItem({
         ...internalFormItem,
-        StationNameAssignedToEmail: "",
+        StationNameAssignedToEmail: '',
         StationNameAssignedToId: 0,
-      });
-    else if (param == "StationNameDate")
-      setinternalFormItem({ ...internalFormItem, StationNameDate: newValue });
-    else if (param == "OnboardToSupervisor")
+      })
+    else if (param == 'StationNameDate')
+      setinternalFormItem({ ...internalFormItem, StationNameDate: newValue })
+    else if (param == 'OnboardToSupervisor')
       setinternalFormItem({
         ...internalFormItem,
         OnboardToSupervisor: newValue,
-      });
-    else if (param == "OnboardAssignedTo" && newValue.length > 0)
+      })
+    else if (param == 'OnboardAssignedTo' && newValue.length > 0)
       setinternalFormItem({
         ...internalFormItem,
         OnboardAssignedToEmail: newValue[0].secondaryText,
         OnboardAssignedToId: newValue[0].id,
-      });
-    else if (param == "OnboardAssignedTo" && newValue.length == 0)
+      })
+    else if (param == 'OnboardAssignedTo' && newValue.length == 0)
       setinternalFormItem({
         ...internalFormItem,
-        OnboardAssignedToEmail: "",
+        OnboardAssignedToEmail: '',
         OnboardAssignedToId: 0,
-      });
-    else if (param == "OnboardDate")
-      setinternalFormItem({ ...internalFormItem, OnboardDate: newValue });
-    else if (param == "Notes")
-      setinternalFormItem({ ...internalFormItem, Notes: newValue });
+      })
+    else if (param == 'OnboardDate')
+      setinternalFormItem({ ...internalFormItem, OnboardDate: newValue })
+    else if (param == 'Notes')
+      setinternalFormItem({ ...internalFormItem, Notes: newValue })
   }
 
   async function submitItem() {
-    var viewItem = internalFormItem;
+    var viewItem = internalFormItem
     if (viewItem.Id == 0 || !viewItem.Id) {
       let list = props.spcontext.web.lists
-        .getByTitle("InternalFormList")
+        .getByTitle('InternalFormList')
         .items.add({
           BENumber: viewItem.BENumber.toString(),
           ProjectName: viewItem.ProjectName.toString(),
@@ -515,10 +514,9 @@ const App = (props) => {
             : null,
           InternalConfigDate: viewItem.InternalConfigDate,
           LightingLiveConfig: viewItem.LightingLiveConfig,
-          LightingLiveConfigAssignedToId:
-            viewItem.LightingLiveConfigAssignedToId
-              ? viewItem.LightingLiveConfigAssignedToId
-              : null,
+          LightingLiveConfigAssignedToId: viewItem.LightingLiveConfigAssignedToId
+            ? viewItem.LightingLiveConfigAssignedToId
+            : null,
           LightingLiveConfigDate: viewItem.InternalConfigDate,
           HVACConfig: viewItem.HVACConfig,
           HVACConfigAssignedToId: viewItem.HVACConfigAssignedToId
@@ -544,14 +542,14 @@ const App = (props) => {
           TaskDetails: JSON.stringify(newtasks),
           ShippingDetails: JSON.stringify(newShippingDetails),
           ReferenceID: requestID.toString(),
-          RecordType: requestType.toLocaleLowerCase() == "wf" ? "WF" : "NWF",
+          RecordType: requestType.toLocaleLowerCase() == 'wf' ? 'WF' : 'NWF',
         })
         .then(() => {
-          setHideDialog(false);
-        });
+          setHideDialog(false)
+        })
     } else {
       let list = props.spcontext.web.lists
-        .getByTitle("InternalFormList")
+        .getByTitle('InternalFormList')
         .items.getById(viewItem.Id)
         .update({
           BENumber: viewItem.BENumber,
@@ -576,10 +574,9 @@ const App = (props) => {
             : null,
           InternalConfigDate: viewItem.InternalConfigDate,
           LightingLiveConfig: viewItem.LightingLiveConfig,
-          LightingLiveConfigAssignedToId:
-            viewItem.LightingLiveConfigAssignedToId
-              ? viewItem.LightingLiveConfigAssignedToId
-              : null,
+          LightingLiveConfigAssignedToId: viewItem.LightingLiveConfigAssignedToId
+            ? viewItem.LightingLiveConfigAssignedToId
+            : null,
           LightingLiveConfigDate: viewItem.InternalConfigDate,
           HVACConfig: viewItem.HVACConfig,
           HVACConfigAssignedToId: viewItem.HVACConfigAssignedToId
@@ -605,66 +602,65 @@ const App = (props) => {
           TaskDetails: JSON.stringify(newtasks),
           ShippingDetails: JSON.stringify(newShippingDetails),
           ReferenceID: requestID.toString(),
-          RecordType: requestType.toLocaleLowerCase() == "wf" ? "WF" : "NWF",
+          RecordType: requestType.toLocaleLowerCase() == 'wf' ? 'WF' : 'NWF',
         })
         .then(() => {
-          setHideDialog(false);
-        });
+          setHideDialog(false)
+        })
     }
   }
 
   async function dynamictaskhandlechange(newValue, key, index) {
-    if (key == "TaskChecked") newtasks[index].TaskChecked = newValue;
+    if (key == 'TaskChecked') newtasks[index].TaskChecked = newValue
 
-    if (key == "TaskName") newtasks[index].TaskName = newValue;
+    if (key == 'TaskName') newtasks[index].TaskName = newValue
 
-    if (key == "CompletedBy") {
+    if (key == 'CompletedBy') {
       if (newValue.length > 0) {
-        newtasks[index].CompletedBy = newValue[0].secondaryText;
-        newtasks[index].Userid = newValue[0].id;
+        newtasks[index].CompletedBy = newValue[0].secondaryText
+        newtasks[index].Userid = newValue[0].id
       } else {
-        newtasks[index].CompletedBy = "";
-        newtasks[index].Userid = "";
+        newtasks[index].CompletedBy = ''
+        newtasks[index].Userid = ''
       }
     }
 
-    if (key == "Date") newtasks[index].Date = newValue;
+    if (key == 'Date') newtasks[index].Date = newValue
 
-    setnewtasks([...newtasks]);
+    setnewtasks([...newtasks])
   }
 
   async function dynamicshippinghandlechange(newValue, key, index) {
-    if (key == "TrackingNumber")
-      newShippingDetails[index].TrackingNumber = newValue;
+    if (key == 'TrackingNumber')
+      newShippingDetails[index].TrackingNumber = newValue
 
-    if (key == "ShippingDate")
-      newShippingDetails[index].ShippingDate = newValue;
+    if (key == 'ShippingDate') newShippingDetails[index].ShippingDate = newValue
 
-    if (key == "CarrierNumber")
-      newShippingDetails[index].CarrierNumber = newValue;
+    if (key == 'CarrierNumber')
+      newShippingDetails[index].CarrierNumber = newValue
 
-    setnewShippingDetails([...newShippingDetails]);
+    setnewShippingDetails([...newShippingDetails])
   }
 
   async function deleteshippinghandlechange(key) {
-    var deleteShippingDetails = newShippingDetails;
-    deleteShippingDetails.splice(key, 1);
-    setnewShippingDetails([...deleteShippingDetails]);
+    var deleteShippingDetails = newShippingDetails
+    deleteShippingDetails.splice(key, 1)
+    setnewShippingDetails([...deleteShippingDetails])
   }
 
   async function deletehandlechange(key) {
-    var deletetasks = newtasks;
-    deletetasks.splice(key, 1);
-    setnewtasks([...deletetasks]);
+    var deletetasks = newtasks
+    deletetasks.splice(key, 1)
+    setnewtasks([...deletetasks])
   }
 
-  var test = internalFormItem.POIssued;
+  var test = internalFormItem.POIssued
 
   return (
     <ThemeProvider
-      theme={requestType.toLocaleLowerCase() == "wf" ? redTheme : blueTheme}
+      theme={requestType.toLocaleLowerCase() == 'wf' ? redTheme : blueTheme}
     >
-      <div style={{ backgroundColor: "#F2F2F2", padding: "1rem" }}>
+      <div style={{ backgroundColor: '#F2F2F2', padding: '1rem' }}>
         <div className={styles.formHeader}>
           <div>
             <Icon
@@ -673,7 +669,7 @@ const App = (props) => {
                 root: {
                   fontSize: 30,
                   fontWeight: 600,
-                  color: requestType == "wf" ? "#d71e2b" : "#004fa2",
+                  color: requestType == 'wf' ? '#d71e2b' : '#004fa2',
                 },
               }}
               onClick={() =>
@@ -685,10 +681,10 @@ const App = (props) => {
           </div>
           <h1 className={styles.heading}>Internal Form</h1>
           <div className={styles.SubmitSection}>
-            {" "}
+            {' '}
             <DefaultButton
               text="Devices"
-              style={{ color: requestType == "wf" ? "#d71e2b" : "#004fa2" }}
+              style={{ color: requestType == 'wf' ? '#d71e2b' : '#004fa2' }}
               href={
                 props.context.pageContext.web.absoluteUrl +
                 `/SitePages/DeviceList.aspx?RequestID=${requestID}&RequestType=${requestType}`
@@ -700,29 +696,32 @@ const App = (props) => {
         <div className={styles.quoteFormSection}>
           <div
             className={styles.quoteFormSection}
-            style={{ marginLeft: "0.3rem" }}
+            style={{ marginLeft: '0.3rem' }}
           >
             <div
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginLeft: "0.2rem",
+                display: 'flex',
+                justifyContent: 'space-between',
+                marginLeft: '0.2rem',
               }}
             >
               <TextField
                 label={
-                  requestType.toLocaleLowerCase() == "wf" ? "BE#" : "Site Name"
+                  requestType.toLocaleLowerCase() == 'wf' ? 'BE#' : 'Site Name'
                 }
                 styles={halfWidthInput}
+                //value={internalFormItem.BENumber}
                 value={internalFormItem.BENumber}
-                onChange={(e, newValue) => handleChange(newValue, "BENumber")}
+                //disabled ={true}
+                onChange={(e, newValue) => handleChange(newValue, 'BENumber')}
               />
               <TextField
                 label="Project Name"
+                //disabled ={true}
                 styles={halfWidthInput}
                 value={internalFormItem.ProjectName}
                 onChange={(e, newValue) =>
-                  handleChange(newValue, "ProjectName")
+                  handleChange(newValue, 'ProjectName')
                 }
               />
               <TextField
@@ -730,7 +729,7 @@ const App = (props) => {
                 styles={halfWidthInput}
                 value={internalFormItem.BuilderInitials}
                 onChange={(e, newValue) =>
-                  handleChange(newValue, "BuilderInitials")
+                  handleChange(newValue, 'BuilderInitials')
                 }
               />
               <TextField
@@ -738,38 +737,38 @@ const App = (props) => {
                 styles={halfWidthInput}
                 value={internalFormItem.ProjectManager}
                 onChange={(e, newValue) =>
-                  handleChange(newValue, "ProjectManager")
+                  handleChange(newValue, 'ProjectManager')
                 }
               />
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <TextField
                 styles={halfWidthInput}
                 label="Longtitude"
                 value={internalFormItem.Longtitude}
-                onChange={(e, newValue) => handleChange(newValue, "Longtitude")}
+                onChange={(e, newValue) => handleChange(newValue, 'Longtitude')}
               />
 
               <TextField
                 styles={halfWidthInput}
                 label="Latitude"
                 value={internalFormItem.Latitude}
-                onChange={(e, newValue) => handleChange(newValue, "Latitude")}
+                onChange={(e, newValue) => handleChange(newValue, 'Latitude')}
               />
               <TextField
                 styles={halfWidthInput}
                 label="State"
                 value={internalFormItem.State}
-                onChange={(e, newValue) => handleChange(newValue, "State")}
+                onChange={(e, newValue) => handleChange(newValue, 'State')}
               />
               <TextField
                 styles={halfWidthInput}
                 label="Zipcode"
                 value={internalFormItem.Zipcode}
-                onChange={(e, newValue) => handleChange(newValue, "Zipcode")}
+                onChange={(e, newValue) => handleChange(newValue, 'Zipcode')}
               />
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <TextField
                 label="Project Description"
                 rows={2}
@@ -777,7 +776,7 @@ const App = (props) => {
                 styles={halfWidthInput}
                 value={internalFormItem.ProjectDescription}
                 onChange={(e, newValue) =>
-                  handleChange(newValue, "ProjectDescription")
+                  handleChange(newValue, 'ProjectDescription')
                 }
               />
               <TextField
@@ -786,9 +785,9 @@ const App = (props) => {
                 multiline
                 styles={halfWidthInput}
                 value={internalFormItem.Address}
-                onChange={(e, newValue) => handleChange(newValue, "Address")}
+                onChange={(e, newValue) => handleChange(newValue, 'Address')}
               />
-              {requestType.toLowerCase() == "wf" ? (
+              {requestType.toLowerCase() == 'wf' ? (
                 <TextField
                   label="UtilityNet Information"
                   rows={2}
@@ -796,16 +795,16 @@ const App = (props) => {
                   styles={halfWidthInput}
                   value={internalFormItem.UtilityNetInformation}
                   onChange={(e, newValue) =>
-                    handleChange(newValue, "UtilityNetInformation")
+                    handleChange(newValue, 'UtilityNetInformation')
                   }
                 />
               ) : (
-                <div style={{ width: 300, margin: "0 1rem 0.5rem 0" }}></div>
+                <div style={{ width: 300, margin: '0 1rem 0.5rem 0' }}></div>
               )}
-              <div style={{ width: 300, margin: "0 1rem 0.5rem 0" }}></div>
+              <div style={{ width: 300, margin: '0 1rem 0.5rem 0' }}></div>
             </div>
             <hr></hr>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <DatePicker
                 styles={halfWidthInput}
                 firstDayOfWeek={firstDayOfWeek}
@@ -818,7 +817,7 @@ const App = (props) => {
                     ? new Date(internalFormItem.DateofQuote)
                     : new Date()
                 }
-                onSelectDate={(date) => handleChange(date, "DateofQuote")}
+                onSelectDate={(date) => handleChange(date, 'DateofQuote')}
               />
               <DatePicker
                 styles={halfWidthInput}
@@ -832,7 +831,7 @@ const App = (props) => {
                     ? new Date(internalFormItem.DateQuoteSent)
                     : new Date()
                 }
-                onSelectDate={(date) => handleChange(date, "DateQuoteSent")}
+                onSelectDate={(date) => handleChange(date, 'DateQuoteSent')}
               />
               <DatePicker
                 styles={halfWidthInput}
@@ -846,7 +845,7 @@ const App = (props) => {
                     ? new Date(internalFormItem.ShippingDate)
                     : new Date()
                 }
-                onSelectDate={(date) => handleChange(date, "ShippingDate")}
+                onSelectDate={(date) => handleChange(date, 'ShippingDate')}
               />
               <ChoiceGroup
                 styles={choiceGroupStyles}
@@ -856,10 +855,10 @@ const App = (props) => {
                 options={options}
                 onChange={(
                   ev: React.FormEvent<HTMLInputElement>,
-                  option: any
+                  option: any,
                 ) => {
-                  if (option.text == "Yes") handleChange(true, "POIssued");
-                  else handleChange(false, "POIssued");
+                  if (option.text == 'Yes') handleChange(true, 'POIssued')
+                  else handleChange(false, 'POIssued')
                 }}
                 required={true}
               />
@@ -883,7 +882,7 @@ const App = (props) => {
                       strings={defaultDatePickerStrings}
                       value={new Date(val.ShippingDate)}
                       onSelectDate={(date) =>
-                        dynamicshippinghandlechange(date, "ShippingDate", key)
+                        dynamicshippinghandlechange(date, 'ShippingDate', key)
                       }
                     />
                     <TextField
@@ -892,8 +891,8 @@ const App = (props) => {
                       onChange={(e, newValue) =>
                         dynamicshippinghandlechange(
                           newValue,
-                          "TrackingNumber",
-                          key
+                          'TrackingNumber',
+                          key,
                         )
                       }
                     />
@@ -903,31 +902,31 @@ const App = (props) => {
                       onChange={(e, newValue) =>
                         dynamicshippinghandlechange(
                           newValue,
-                          "CarrierNumber",
-                          key
+                          'CarrierNumber',
+                          key,
                         )
                       }
                     />
                     <div
                       style={{
                         width: 300,
-                        margin: "0 1rem 0.5rem 0",
-                        alignSelf: "flex-end",
-                        paddingBottom: "0.2rem",
+                        margin: '0 1rem 0.5rem 0',
+                        alignSelf: 'flex-end',
+                        paddingBottom: '0.2rem',
                       }}
                     >
                       <IconButton
                         iconProps={{
-                          iconName: "Delete",
+                          iconName: 'Delete',
                           style: {
                             fontSize: 20,
-                            color: requestType == "wf" ? "#d71e2b" : "#004fa2",
+                            color: requestType == 'wf' ? '#d71e2b' : '#004fa2',
                           },
                         }}
                         title="Delete"
                         data-index={key}
                         onClick={(e) => {
-                          deleteshippinghandlechange(key);
+                          deleteshippinghandlechange(key)
                         }}
                       />
                     </div>
@@ -935,27 +934,27 @@ const App = (props) => {
                 ))}
               </div>
             ) : (
-              ""
+              ''
             )}
 
             <div
               style={{
-                display: "flex",
-                justifyContent: "flex-end",
-                margin: "1rem",
+                display: 'flex',
+                justifyContent: 'flex-end',
+                margin: '1rem',
               }}
             >
               <DefaultButton
                 text="Add"
                 onClick={() => {
-                  var shippingDetails = newShippingDetails;
+                  var shippingDetails = newShippingDetails
                   shippingDetails.push({
-                    TrackingNumber: "",
-                    CarrierNumber: "",
+                    TrackingNumber: '',
+                    CarrierNumber: '',
                     ShippingDate: new Date(),
-                  });
+                  })
 
-                  setnewShippingDetails([...shippingDetails]);
+                  setnewShippingDetails([...shippingDetails])
                 }}
               />
             </div>
@@ -964,12 +963,12 @@ const App = (props) => {
             {}
             {/* Tasks Satrting */}
             <div className={styles.formTasks}>
-              <div style={{ display: "flex", marginTop: "20px" }}>
-                <Label style={{ width: "340px" }}>Task Name</Label>
+              <div style={{ display: 'flex', marginTop: '20px' }}>
+                <Label style={{ width: '340px' }}>Task Name</Label>
               </div>
               <div
                 className={styles.formpplpicker}
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: '20px' }}
               >
                 {/* <label>Completed By</label> */}
                 <Label>Completed by</Label>
@@ -977,19 +976,19 @@ const App = (props) => {
 
               <div
                 className={styles.formDatepick}
-                style={{ marginTop: "20px" }}
+                style={{ marginTop: '20px' }}
               >
                 <Label>Date</Label>
               </div>
-              <div style={{ alignSelf: "flex-end", marginBottom: "8px" }}></div>
+              <div style={{ alignSelf: 'flex-end', marginBottom: '8px' }}></div>
             </div>
             {/* Tasks */}
             <div className={styles.formTasks}>
               <Checkbox
-                styles={{ root: { width: "342px" } }}
+                styles={{ root: { width: '342px' } }}
                 label="Internal Configuration Completion Date"
                 onChange={(e, checked) =>
-                  handleChange(checked, "InternalConfig")
+                  handleChange(checked, 'InternalConfig')
                 }
                 checked={internalFormItem.InternalConfig}
               />
@@ -999,7 +998,7 @@ const App = (props) => {
                   titleText=""
                   context={props.context}
                   personSelectionLimit={1}
-                  groupName={""}
+                  groupName={''}
                   showtooltip={true}
                   showHiddenInUI={false}
                   principalTypes={[PrincipalType.User]}
@@ -1008,7 +1007,7 @@ const App = (props) => {
                     internalFormItem.InternalConfigAssignedToEmail,
                   ]}
                   onChange={(e) => {
-                    handleChange(e, "InternalConfigAssignedTo");
+                    handleChange(e, 'InternalConfigAssignedTo')
                   }}
                   ensureUser={true}
                 />
@@ -1023,18 +1022,18 @@ const App = (props) => {
                   strings={defaultDatePickerStrings}
                   value={new Date(internalFormItem.InternalConfigDate)}
                   onSelectDate={(date) =>
-                    handleChange(date, "InternalConfigDate")
+                    handleChange(date, 'InternalConfigDate')
                   }
                 />
               </div>
             </div>
-            {requestType.toLowerCase() == "wf" ? (
+            {requestType.toLowerCase() == 'wf' ? (
               <div className={styles.formTasks}>
                 <Checkbox
-                  styles={{ root: { width: "342px" } }}
+                  styles={{ root: { width: '342px' } }}
                   label="Lighting Live Configuration Completion Date"
                   onChange={(e, checked) =>
-                    handleChange(checked, "LightingLiveConfig")
+                    handleChange(checked, 'LightingLiveConfig')
                   }
                   checked={internalFormItem.LightingLiveConfig}
                 />
@@ -1044,7 +1043,7 @@ const App = (props) => {
                     titleText=""
                     context={props.context}
                     personSelectionLimit={1}
-                    groupName={""}
+                    groupName={''}
                     showtooltip={true}
                     showHiddenInUI={false}
                     principalTypes={[PrincipalType.User]}
@@ -1053,7 +1052,7 @@ const App = (props) => {
                       internalFormItem.LightingLiveConfigAssignedToEmail,
                     ]}
                     onChange={(e) => {
-                      handleChange(e, "LightingLiveConfigAssignedTo");
+                      handleChange(e, 'LightingLiveConfigAssignedTo')
                     }}
                     ensureUser={true}
                   />
@@ -1068,20 +1067,20 @@ const App = (props) => {
                     strings={defaultDatePickerStrings}
                     value={new Date(internalFormItem.LightingLiveConfigDate)}
                     onSelectDate={(date) =>
-                      handleChange(date, "LightingLiveConfigDate")
+                      handleChange(date, 'LightingLiveConfigDate')
                     }
                   />
                 </div>
               </div>
             ) : (
-              ""
+              ''
             )}
-            {requestType.toLowerCase() == "wf" ? (
+            {requestType.toLowerCase() == 'wf' ? (
               <div className={styles.formTasks}>
                 <Checkbox
-                  styles={{ root: { width: "342px" } }}
+                  styles={{ root: { width: '342px' } }}
                   label="HVAC Live Configuration Completion Date"
-                  onChange={(e, checked) => handleChange(checked, "HVACConfig")}
+                  onChange={(e, checked) => handleChange(checked, 'HVACConfig')}
                   checked={internalFormItem.HVACConfig}
                 />
 
@@ -1091,7 +1090,7 @@ const App = (props) => {
                     titleText=""
                     context={props.context}
                     personSelectionLimit={1}
-                    groupName={""}
+                    groupName={''}
                     showtooltip={true}
                     showHiddenInUI={false}
                     principalTypes={[PrincipalType.User]}
@@ -1100,7 +1099,7 @@ const App = (props) => {
                       internalFormItem.HVACConfigAssignedToEmail,
                     ]}
                     onChange={(e) => {
-                      handleChange(e, "HVACConfigAssignedTo");
+                      handleChange(e, 'HVACConfigAssignedTo')
                     }}
                     ensureUser={true}
                   />
@@ -1116,21 +1115,21 @@ const App = (props) => {
                     strings={defaultDatePickerStrings}
                     value={new Date(internalFormItem.HVACConfigDate)}
                     onSelectDate={(date) =>
-                      handleChange(date, "HVACConfigDate")
+                      handleChange(date, 'HVACConfigDate')
                     }
                   />
                 </div>
               </div>
             ) : (
-              ""
+              ''
             )}
 
             <div className={styles.formTasks}>
               <Checkbox
-                styles={{ root: { width: "342px" } }}
+                styles={{ root: { width: '342px' } }}
                 label="Other Networks Ips onsite"
                 onChange={(e, checked) =>
-                  handleChange(checked, "OtherNetworkIpsOnsite")
+                  handleChange(checked, 'OtherNetworkIpsOnsite')
                 }
                 checked={internalFormItem.OtherNetworkIpsOnsite}
               />
@@ -1140,7 +1139,7 @@ const App = (props) => {
                   titleText=""
                   context={props.context}
                   personSelectionLimit={1}
-                  groupName={""}
+                  groupName={''}
                   showtooltip={true}
                   showHiddenInUI={false}
                   principalTypes={[PrincipalType.User]}
@@ -1149,7 +1148,7 @@ const App = (props) => {
                     internalFormItem.OtherNetworkIpsAssignedToEmail,
                   ]}
                   onChange={(e) => {
-                    handleChange(e, "OtherNetworkIpsAssignedTo");
+                    handleChange(e, 'OtherNetworkIpsAssignedTo')
                   }}
                   ensureUser={true}
                 />
@@ -1165,7 +1164,7 @@ const App = (props) => {
                   strings={defaultDatePickerStrings}
                   value={new Date(internalFormItem.OtherNetworkIpsOnsiteDate)}
                   onSelectDate={(date) =>
-                    handleChange(date, "OtherNetworkIpsOnsiteDate")
+                    handleChange(date, 'OtherNetworkIpsOnsiteDate')
                   }
                 />
               </div>
@@ -1173,9 +1172,9 @@ const App = (props) => {
 
             <div className={styles.formTasks}>
               <Checkbox
-                styles={{ root: { width: "342px" } }}
+                styles={{ root: { width: '342px' } }}
                 label="Station Name"
-                onChange={(e, checked) => handleChange(checked, "StationName")}
+                onChange={(e, checked) => handleChange(checked, 'StationName')}
                 checked={internalFormItem.StationName}
               />
               <div className={styles.formpplpicker}>
@@ -1184,7 +1183,7 @@ const App = (props) => {
                   titleText=""
                   context={props.context}
                   personSelectionLimit={1}
-                  groupName={""}
+                  groupName={''}
                   showtooltip={true}
                   showHiddenInUI={false}
                   principalTypes={[PrincipalType.User]}
@@ -1193,7 +1192,7 @@ const App = (props) => {
                     internalFormItem.StationNameAssignedToEmail,
                   ]}
                   onChange={(e) => {
-                    handleChange(e, "StationNameAssignedTo");
+                    handleChange(e, 'StationNameAssignedTo')
                   }}
                   ensureUser={true}
                 />
@@ -1208,18 +1207,18 @@ const App = (props) => {
                   ariaLabel="Select a date"
                   strings={defaultDatePickerStrings}
                   value={new Date(internalFormItem.StationNameDate)}
-                  onSelectDate={(date) => handleChange(date, "StationNameDate")}
+                  onSelectDate={(date) => handleChange(date, 'StationNameDate')}
                 />
               </div>
             </div>
-            {requestType.toLowerCase() == "wf" ? (
+            {requestType.toLowerCase() == 'wf' ? (
               <div className={styles.formTasks}>
                 <Checkbox
-                  styles={{ root: { width: "342px" } }}
+                  styles={{ root: { width: '342px' } }}
                   // styles={halfWidthInput}
                   label="Onboarded to Supervisor"
                   onChange={(e, checked) =>
-                    handleChange(checked, "OnboardToSupervisor")
+                    handleChange(checked, 'OnboardToSupervisor')
                   }
                   checked={internalFormItem.OnboardToSupervisor}
                 />
@@ -1229,7 +1228,7 @@ const App = (props) => {
                     titleText=""
                     context={props.context}
                     personSelectionLimit={1}
-                    groupName={""}
+                    groupName={''}
                     showtooltip={true}
                     showHiddenInUI={false}
                     principalTypes={[PrincipalType.User]}
@@ -1238,7 +1237,7 @@ const App = (props) => {
                       internalFormItem.OnboardAssignedToEmail,
                     ]}
                     onChange={(e) => {
-                      handleChange(e, "OnboardAssignedTo");
+                      handleChange(e, 'OnboardAssignedTo')
                     }}
                     ensureUser={true}
                   />
@@ -1253,25 +1252,25 @@ const App = (props) => {
                     ariaLabel="Select a date"
                     strings={defaultDatePickerStrings}
                     value={new Date(internalFormItem.OnboardDate)}
-                    onSelectDate={(date) => handleChange(date, "OnboardDate")}
+                    onSelectDate={(date) => handleChange(date, 'OnboardDate')}
                   />
                 </div>
               </div>
             ) : (
-              ""
+              ''
             )}
             <div>
               {newtasks.length > 0
                 ? newtasks.map((val, key) => (
                     <div className={styles.formTasks}>
-                      <div style={{ display: "flex", marginTop: "6px" }}>
+                      <div style={{ display: 'flex', marginTop: '6px' }}>
                         <Checkbox
                           styles={{
-                            root: { width: "25px", paddingTop: "6px" },
+                            root: { width: '25px', paddingTop: '6px' },
                           }}
                           label=""
                           onChange={(e, checked) =>
-                            dynamictaskhandlechange(checked, "TaskChecked", key)
+                            dynamictaskhandlechange(checked, 'TaskChecked', key)
                           }
                           checked={newtasks[key].TaskChecked}
                         />
@@ -1281,10 +1280,10 @@ const App = (props) => {
                           //   root: { width: 264, margin: "0 1rem 0.5rem 0" },
                           // }}
                           styles={halfWidthInput}
-                          style={{ display: "inline" }}
+                          style={{ display: 'inline' }}
                           value={newtasks[key].TaskName}
                           onChange={(e, newValue) =>
-                            dynamictaskhandlechange(newValue, "TaskName", key)
+                            dynamictaskhandlechange(newValue, 'TaskName', key)
                           }
                         />
                       </div>
@@ -1294,14 +1293,14 @@ const App = (props) => {
                           titleText=""
                           context={props.context}
                           personSelectionLimit={1}
-                          groupName={""}
+                          groupName={''}
                           showtooltip={true}
                           showHiddenInUI={false}
                           principalTypes={[PrincipalType.User]}
                           resolveDelay={1000}
                           defaultSelectedUsers={[newtasks[key].CompletedBy]}
                           onChange={(e) => {
-                            dynamictaskhandlechange(e, "CompletedBy", key);
+                            dynamictaskhandlechange(e, 'CompletedBy', key)
                           }}
                           ensureUser={true}
                         />
@@ -1317,69 +1316,69 @@ const App = (props) => {
                           strings={defaultDatePickerStrings}
                           value={new Date(newtasks[key].Date)}
                           onSelectDate={(date) =>
-                            dynamictaskhandlechange(date, "Date", key)
+                            dynamictaskhandlechange(date, 'Date', key)
                           }
                         />
                       </div>
                       <div
-                        style={{ alignSelf: "flex-end", marginBottom: "8px" }}
+                        style={{ alignSelf: 'flex-end', marginBottom: '8px' }}
                       >
                         <IconButton
                           iconProps={{
-                            iconName: "Delete",
+                            iconName: 'Delete',
                             style: {
                               fontSize: 20,
                               color:
-                                requestType == "wf" ? "#d71e2b" : "#004fa2",
+                                requestType == 'wf' ? '#d71e2b' : '#004fa2',
                             },
                           }}
                           title="Delte"
                           data-index={key}
                           onClick={(e) => {
-                            deletehandlechange(key);
+                            deletehandlechange(key)
                           }}
                         />
                       </div>
                     </div>
                   ))
-                : ""}
+                : ''}
             </div>
 
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <DefaultButton
                 text="Add"
                 onClick={() => {
-                  count = count + 1;
+                  count = count + 1
 
-                  var tasksdetails = newtasks;
+                  var tasksdetails = newtasks
                   tasksdetails.push({
                     TaskChecked: false,
-                    TaskName: "",
-                    CompletedBy: "",
-                    Userid: "",
+                    TaskName: '',
+                    CompletedBy: '',
+                    Userid: '',
                     Date: new Date(),
-                  });
+                  })
 
-                  setnewtasks([...tasksdetails]);
+                  setnewtasks([...tasksdetails])
                 }}
               />
             </div>
 
-            <div style={{ display: "flex" }}>
+            <div style={{ display: 'flex' }}>
               <TextField
                 label="Notes"
                 rows={4}
                 multiline
                 styles={halfWidthInput}
                 value={internalFormItem.Notes}
-                onChange={(e, newValue) => handleChange(newValue, "Notes")}
+                onChange={(e, newValue) => handleChange(newValue, 'Notes')}
               />
             </div>
             <div className={styles.devicebtn}>
               <PrimaryButton
                 onClick={submitItem}
                 text="Submit"
-                style={{ marginRight: "0.6rem" }}
+                style={{ marginRight: '0.6rem' }}
               />
               <DefaultButton
                 text="Cancel"
@@ -1397,10 +1396,10 @@ const App = (props) => {
         <Dialog
           hidden={hideDialog}
           onDismiss={() => {
-            setHideDialog(true);
+            setHideDialog(true)
             window.location.href =
               props.context.pageContext.web.absoluteUrl +
-              `/SitePages/AdminDashboard.aspx`;
+              `/SitePages/AdminDashboard.aspx`
           }}
           dialogContentProps={dialogContentProps}
         >
@@ -1417,6 +1416,6 @@ const App = (props) => {
         </Dialog>
       </div>
     </ThemeProvider>
-  );
-};
-export default App;
+  )
+}
+export default App
