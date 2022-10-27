@@ -13,6 +13,10 @@ import {
   IStackTokens,
   createTheme,
   loadTheme,
+  ScrollablePane,
+  ScrollbarVisibility,
+  Sticky,
+  StickyPositionType,
 } from '@fluentui/react'
 import { TextField } from '@fluentui/react/lib/TextField'
 import { Label } from '@fluentui/react/lib/Label'
@@ -378,7 +382,10 @@ const App = (props) => {
       ),
     },
   ]
-
+  const sbWidth = 6
+  const sbHeight = 6
+  const sbBg = 'gray'
+  const sbThumbBg = 'black'
   useEffect(() => {
     if (reRender) {
       // props.spcontext.web.lists.getByTitle("DevicesList").items.select("*,SupervisorName/Title,SupervisorName/EMail,SupervisorName/ID").expand("SupervisorName").filter(`ReferenceID eq '${requestID}' and RecordType eq '${requestType}'`).orderBy("Created", false).get().then(async (deviceData: any)=>{
@@ -1054,6 +1061,64 @@ const App = (props) => {
             isHeaderVisible={true}
             selectionMode={SelectionMode.none}
           />
+          {/* <ScrollablePane
+        scrollbarVisibility={ScrollbarVisibility.auto}
+        styles={{
+          root: {
+            selectors: {
+              ".ms-ScrollablePane--contentContainer": {
+                scrollbarWidth: sbWidth,
+                scrollbarColor: `${sbThumbBg} ${sbBg}`
+              },
+              ".ms-ScrollablePane--contentContainer::-webkit-scrollbar": {
+                width: sbWidth,
+                height: sbHeight
+              },
+              ".ms-ScrollablePane--contentContainer::-webkit-scrollbar-track": {
+                background: sbBg
+              },
+              ".ms-ScrollablePane--contentContainer::-webkit-scrollbar-thumb": {
+                background: sbThumbBg
+              }
+            }
+          }
+        }}
+      >
+        <DetailsList
+          items={deviceItems}
+            columns={_deviceColumns}
+            setKey="none"
+            layoutMode={DetailsListLayoutMode.justified}
+            isHeaderVisible={true}
+            selectionMode={SelectionMode.none}
+          onRenderDetailsHeader={(headerProps, defaultRender) => {
+            return (
+              <Sticky
+                stickyPosition={StickyPositionType.Header}
+                isScrollSynced={true}
+                stickyBackgroundColor="transparent"
+              >
+                {defaultRender({
+                  ...headerProps,
+                  styles: {
+                    root: {
+                      selectors: {
+                        ".ms-DetailsHeader-cellName": {
+                          fontWeight: "bold",
+                          fontSize: 13
+                        }
+                      },
+                      background: "#f5f5f5",
+                      borderBottom: "1px solid #ddd",
+                      paddingTop: 1
+                    }
+                  }
+                })}
+              </Sticky>
+            );
+          }}
+        />
+      </ScrollablePane> */}
         </div>
       ) : (
         <div className={styles.noDataFound}>No Data Found</div>
