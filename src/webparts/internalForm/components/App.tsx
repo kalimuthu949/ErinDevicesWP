@@ -142,6 +142,13 @@ const App = (props) => {
     },
   })
   const choiceGroupStyles = {
+    root: {
+      selectors: {
+        '.ms-ChoiceField-wrapper::after': {
+          border: '0 !important',
+        },
+      },
+    },
     flexContainer: {
       display: 'flex',
       width: 300,
@@ -849,9 +856,11 @@ const App = (props) => {
               />
               <ChoiceGroup
                 styles={choiceGroupStyles}
+                //defaultSelectedKey="All"
+
                 label="P.O. Issued"
                 name="POIssued"
-                defaultSelectedKey="A"
+                defaultSelectedKey="B"
                 options={options}
                 onChange={(
                   ev: React.FormEvent<HTMLInputElement>,
@@ -1375,19 +1384,16 @@ const App = (props) => {
               />
             </div>
             <div className={styles.devicebtn}>
-              <PrimaryButton
-                onClick={submitItem}
-                text="Submit"
-                style={{ marginRight: '0.6rem' }}
-              />
               <DefaultButton
                 text="Cancel"
+                style={{ marginRight: '0.6rem' }}
                 onClick={() =>
                   (window.location.href =
                     props.context.pageContext.web.absoluteUrl +
                     `/SitePages/AdminDashboard.aspx`)
                 }
               />
+              <PrimaryButton onClick={submitItem} text="Submit" />
             </div>
           </div>
         </div>

@@ -1471,12 +1471,6 @@ const App = (props) => {
           </div>
 
           <div className={styles.viewformbtn}>
-            <PrimaryButton
-              styles={PrimBtnStyles}
-              text="Submit"
-              onClick={() => updateDeviceItem(viewItem.Id)}
-              className={styles.submitbtn}
-            />
             <DefaultButton
               text="Cancel"
               onClick={() => {
@@ -1506,6 +1500,12 @@ const App = (props) => {
                   DateCode: '',
                 })
               }}
+            />
+            <PrimaryButton
+              styles={PrimBtnStyles}
+              text="Submit"
+              onClick={() => updateDeviceItem(viewItem.Id)}
+              className={styles.submitbtn}
             />
           </div>
         </div>
