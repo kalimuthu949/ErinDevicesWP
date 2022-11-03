@@ -773,6 +773,7 @@ const App = (props) => {
                 label="Project Description"
                 rows={2}
                 multiline
+                resizable={false}
                 styles={halfWidthInput}
                 value={internalFormItem.ProjectDescription}
                 onChange={(e, newValue) =>
@@ -783,6 +784,7 @@ const App = (props) => {
                 label="Street Address"
                 rows={2}
                 multiline
+                resizable={false}
                 styles={halfWidthInput}
                 value={internalFormItem.Address}
                 onChange={(e, newValue) => handleChange(newValue, 'Address')}
@@ -792,6 +794,7 @@ const App = (props) => {
                   label="UtilityNet Information"
                   rows={2}
                   multiline
+                  resizable={false}
                   styles={halfWidthInput}
                   value={internalFormItem.UtilityNetInformation}
                   onChange={(e, newValue) =>
@@ -1369,6 +1372,7 @@ const App = (props) => {
                 label="Notes"
                 rows={4}
                 multiline
+                resizable={false}
                 styles={halfWidthInput}
                 value={internalFormItem.Notes}
                 onChange={(e, newValue) => handleChange(newValue, 'Notes')}
